@@ -39,3 +39,6 @@ parameters:
     type: "string"
     description: "Token code from the MFA"
     secret: true
+  role_session_name:
+    type: "string"
+    description: "An identifier for the assumed role session."

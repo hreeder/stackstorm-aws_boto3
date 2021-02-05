@@ -13,7 +13,8 @@ class Boto3AssumeRoleRunner(Action):
     def run(self, role_arn,
             policy=None, duration=3600, external_id=None,
             aws_access_key_id=None, aws_secret_access_key=None,
-            use_mfa=False, serial_number=None, token_code=None):
+            use_mfa=False, serial_number=None, token_code=None,
+            role_session_name=None):
 
         success = False
         result = dict()
@@ -27,11 +28,11 @@ class Boto3AssumeRoleRunner(Action):
         client = boto3.client('sts', **sts_kwargs)
 
         # Dynamically build the RoleSessionName with the action execution so we know it's unique.
-        role_session_name = "ST2AssumeRole_{}".format(os.environ['ST2_ACTION_EXECUTION_ID'])
+        _role_session_name = role_session_name or "ST2AssumeRole_{}".format(os.environ['ST2_ACTION_EXECUTION_ID'])
 
         kwargs = {
             'RoleArn': role_arn,
-            'RoleSessionName': role_session_name,
+            'RoleSessionName': _role_session_name,
             'DurationSeconds': duration,
         }
 
